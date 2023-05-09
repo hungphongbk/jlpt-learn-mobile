@@ -10,20 +10,28 @@ enum GameType { kanjiToText, kanaToText, kanjiToKana }
 abstract class FancyButtonColors {
   static const Color unpressedBg = Color(0xFFE0E0E0);
   static const Color unpressedFg = Color(0xFF424242);
+
+  // teal
+  static const Color pressedBg = Color(0xFF80CBC4); // teal200
+  static const Color pressedFg = Color(0xFF00796B); // teal700
 }
 
-class MixAndMatchPage extends StatefulWidget {
+// class MixAndMatchPage extends StatefulWidget {
+//   const MixAndMatchPage({super.key, required this.gameType});
+//
+//   final GameType gameType;
+//
+//   @override
+//   State<StatefulWidget> createState() {
+//     return _MixAndMatchState();
+//   }
+// }
+
+class MixAndMatchPage extends StatelessWidget {
   const MixAndMatchPage({super.key, required this.gameType});
 
   final GameType gameType;
 
-  @override
-  State<StatefulWidget> createState() {
-    return _MixAndMatchState();
-  }
-}
-
-class _MixAndMatchState extends State<MixAndMatchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +45,7 @@ class _MixAndMatchState extends State<MixAndMatchPage> {
               if (result.parsedData != null) {
                 return _MixAndMatchGame(
                   result: result,
-                  gameType: widget.gameType,
+                  gameType: gameType,
                 );
               }
               return const Text('loading...');
@@ -49,13 +57,30 @@ class _MixAndMatchState extends State<MixAndMatchPage> {
 
 typedef _ButtonPayload = Tuple3<String, String, String>;
 
-class _MixAndMatchGame extends StatelessWidget {
+class _MixAndMatchGame extends StatefulWidget {
   const _MixAndMatchGame({required this.result, required this.gameType});
 
   final QueryResult<Query$MobileGame> result;
   final GameType gameType;
 
-  List<_ButtonPayload> _select() {
+  @override
+  State<StatefulWidget> createState() {
+    return _MixAndMatchGameState();
+  }
+}
+
+class _MixAndMatchGameState extends State<_MixAndMatchGame> {
+  List<_ButtonPayload>? _shuffled;
+  _ButtonPayload? predicate;
+
+  @override
+  void initState() {
+    super.initState();
+    _shuffle();
+  }
+
+  void _shuffle() {
+    final gameType = widget.gameType;
     String getFirst(Query$MobileGame$words e) {
       return (gameType == GameType.kanjiToKana ||
               gameType == GameType.kanjiToText)
@@ -70,7 +95,7 @@ class _MixAndMatchGame extends StatelessWidget {
           : e.pronounce;
     }
 
-    final wordList = result.parsedData!.words!;
+    final wordList = widget.result.parsedData!.words!;
     wordList.shuffle();
     final first = wordList
         .sublist(0, 5)
@@ -87,12 +112,22 @@ class _MixAndMatchGame extends StatelessWidget {
       rs.add(first[i]);
       rs.add(second[i]);
     }
-    return rs;
+
+    setState(() {
+      _shuffled = rs;
+    });
+  }
+
+  void _select(_ButtonPayload pressed) {
+    if (pressed.item2.isEmpty) {
+      setState(() {
+        predicate = pressed;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final selected = _select();
     return GridView.count(
       crossAxisCount: 2,
       crossAxisSpacing: 16,
@@ -100,12 +135,16 @@ class _MixAndMatchGame extends StatelessWidget {
       primary: false,
       childAspectRatio: 2,
       children: [
-        for (var i = 0; i < selected.length; i++)
+        for (var i = 0; i < (_shuffled?.length ?? 0); i++)
           Container(
             padding: const EdgeInsets.only(bottom: 6.0),
             child: WordButton(
-              payload: selected[i],
+              payload: _shuffled![i],
               pos: i % 2,
+              predicate: predicate,
+              onPressed: (){
+                _select(_shuffled![i]);
+              },
             ),
           )
       ],
@@ -114,17 +153,27 @@ class _MixAndMatchGame extends StatelessWidget {
 }
 
 class WordButton extends StatelessWidget {
-  const WordButton({super.key, required this.payload, required this.pos});
+  const WordButton(
+      {super.key, required this.payload, required this.pos, this.predicate, required this.onPressed});
 
   final _ButtonPayload payload;
+  final _ButtonPayload? predicate;
   final int pos;
+  final VoidCallback onPressed;
+
+  bool get tapped {
+    return predicate == payload;
+  }
 
   @override
   Widget build(BuildContext context) {
     return FancyButton(
+      onPressed: onPressed,
       size: 30,
-      backgroundColor: FancyButtonColors.unpressedBg,
-      foregroundColor: FancyButtonColors.unpressedFg,
+      backgroundColor:
+          tapped ? FancyButtonColors.pressedBg : FancyButtonColors.unpressedBg,
+      foregroundColor:
+          tapped ? FancyButtonColors.pressedFg : FancyButtonColors.unpressedFg,
       child: Text(
         payload.item1,
         style: TextStyle(

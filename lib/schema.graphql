@@ -1,0 +1,63 @@
+# This file was generated. Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Kanji {
+    hv: String
+    id: String!
+}
+
+type Mutation {
+    addNewWord(word: WordInsertInput!): Word!
+    upsertKanji(id: String!, kanji: KanjiUpsertInput!): Kanji!
+}
+
+type Query {
+    kanji(id: String!): Kanji!
+    word(id: String!): Word!
+    words(where: WordQueryInput): [Word!]
+}
+
+type Tag {
+    id: String!
+}
+
+type Word {
+    explain: String!
+    id: ID!
+    kanji: [Kanji!]
+    pronounce: String!
+    tags: [Tag!]
+    word: String!
+}
+
+input ArrayStringComparator {
+    arrayContains: [String!]
+    arrayContainsAny: [String!]
+}
+
+input KanjiUpsertInput {
+    hv: String!
+}
+
+input StringComparator {
+    eq: String
+    in: [String!]
+    neq: String
+    notIn: [String!]
+}
+
+input WordInsertInput {
+    explain: String!
+    pronounce: String!
+    tags: [String!]
+    word: String!
+}
+
+input WordQueryInput {
+    tags: ArrayStringComparator
+    word: StringComparator
+}

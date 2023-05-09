@@ -1,0 +1,7 @@
+query MobileQueryForGame{
+    words{
+        word
+        pronounce
+        explain
+    }
+}

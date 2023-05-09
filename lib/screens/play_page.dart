@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jlpt_learn/components/fancy_button.dart';
+import 'package:jlpt_learn/screens/mix_and_match_page.dart';
 
 class PlayPage extends StatefulWidget {
   const PlayPage({super.key});
@@ -7,15 +9,22 @@ class PlayPage extends StatefulWidget {
   @override
   _PlayPageState createState() => _PlayPageState();
 }
-class _PlayPageState extends State<PlayPage> {
-  String _selected = "";
 
-  Widget _button(String key,String child, [String? label]) {
+class _PlayPageState extends State<PlayPage> {
+  GameType? _selected;
+
+  Widget _button(GameType key, String child, [String? label]) {
+    final ThemeData theme = Theme.of(context);
     return Padding(
         padding: const EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 12.0),
         child: FancyButton(
             size: 30,
-            onPressed: (){
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(_selected == key
+                  ? theme.colorScheme.primaryContainer
+                  : const Color(0xFF607D8B)),
+            ),
+            onPressed: () {
               setState(() {
                 _selected = key;
               });
@@ -23,9 +32,10 @@ class _PlayPageState extends State<PlayPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                label != null ? Text(label,style: const TextStyle(fontSize: 20.0)) : const SizedBox.shrink(),
-                Text(child,
-                    style: const TextStyle(color: Colors.white70))
+                label != null
+                    ? Text(label, style: const TextStyle(fontSize: 20.0))
+                    : const SizedBox.shrink(),
+                Text(child, style: const TextStyle(color: Colors.white70))
               ],
             )));
   }
@@ -37,25 +47,40 @@ class _PlayPageState extends State<PlayPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mix and match'),
+        // backgroundColor: Colors.transparent,
+        // foregroundColor: theme.colorScheme.primary,
+        // shadowColor: Colors.transparent,
       ),
       body: Padding(
-          padding: const EdgeInsets.only(left: 24.0, right: 24.0, top: 24.0),
+          padding: const EdgeInsets.only(
+              left: 24.0, right: 24.0, top: 24.0, bottom: 28.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Chọn hình thức",style:TextStyle(
-                fontSize: 20,
-                color: Colors.black54,
-                fontWeight: FontWeight.w600
-              )),
+              const Text("Chọn hình thức",
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w600)),
               const SizedBox(height: 16.0),
               Wrap(direction: Axis.horizontal, children: <Widget>[
-                _button("0","Kanji / Nghĩa", "漢字 / Aa"),
-                _button("1","Kana / Nghĩa", "かな / Aa"),
-                _button("2","Kanji / Kana","漢字 / かな"),
+                _button(GameType.kanjiToText, "Kanji / Nghĩa", "漢字 / Aa"),
+                _button(GameType.kanaToText, "Kana / Nghĩa", "かな / Aa"),
+                _button(GameType.kanjiToKana, "Kanji / Kana", "漢字 / かな"),
               ]),
-              const SizedBox(height: 32.0),
-              Text(_selected)
+              const Spacer(),
+              SizedBox(
+                width: double.infinity,
+                child: FancyButton(
+                    size: 40,
+                    disabled: _selected == null,
+                    onPressed: () {
+                      context.goNamed('game',
+                          queryParameters: {'gameType': _selected!.name});
+                    },
+                    child:
+                        const Text("BẮT ĐẦU", style: TextStyle(fontSize: 20))),
+              )
             ],
           )),
     );

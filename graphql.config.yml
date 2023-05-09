@@ -1,0 +1,6 @@
+schema: lib/schema.graphql
+include: lib/**
+extensions:
+  endpoints:
+    Production:
+      url: https://jlpt-learn-hungphongbk.vercel.app/api/graphql

@@ -12,8 +12,16 @@ abstract class FancyButtonColors {
   static const Color unpressedFg = Color(0xFF424242);
 
   // teal
-  static const Color pressedBg = Color(0xFF80CBC4); // teal200
-  static const Color pressedFg = Color(0xFF00796B); // teal700
+  static const Color pressedBg = Color(0xFFB2EBF2); // teal200
+  static const Color pressedFg = Color(0xFF0097A7); // teal700
+
+//red
+  static const Color errorBg = Color(0xFFEF9A9A); //red200
+  static const Color errorFg = Color(0xFFC62828); //red800
+
+// light green
+  static const Color successBg = Color(0xFFDCEDC8); //200
+  static const Color successFg = Color(0xFF33691E); //800
 }
 
 // class MixAndMatchPage extends StatefulWidget {
@@ -39,7 +47,7 @@ class MixAndMatchPage extends StatelessWidget {
           title: const Text('Mix and match'),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 28.0),
           child: Query$MobileGame$Widget(
             builder: (result, {fetchMore, refetch}) {
               if (result.parsedData != null) {
@@ -71,7 +79,9 @@ class _MixAndMatchGame extends StatefulWidget {
 
 class _MixAndMatchGameState extends State<_MixAndMatchGame> {
   List<_ButtonPayload>? _shuffled;
-  _ButtonPayload? predicate;
+  int? predicate;
+  Set errorSet = <int>{};
+  Set succeededSet = <int>{};
 
   @override
   void initState() {
@@ -115,38 +125,78 @@ class _MixAndMatchGameState extends State<_MixAndMatchGame> {
 
     setState(() {
       _shuffled = rs;
+      errorSet = {};
+      succeededSet = {};
+      predicate = null;
     });
   }
 
-  void _select(_ButtonPayload pressed) {
-    if (pressed.item2.isEmpty) {
+  void _select(int pressed) {
+    if (_shuffled![pressed].item2.isEmpty) {
       setState(() {
         predicate = pressed;
+        errorSet = {};
       });
+    } else {
+      final first = _shuffled![predicate!];
+      final second = _shuffled![pressed];
+
+      if (first.item3 != second.item3) {
+        errorSet.add(predicate);
+        errorSet.add(pressed);
+        setState(() {
+          errorSet = {...errorSet};
+        });
+      } else {
+        succeededSet.add(predicate);
+        succeededSet.add(pressed);
+        setState(() {
+          succeededSet = {...succeededSet};
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 2,
-      crossAxisSpacing: 16,
-      mainAxisSpacing: 10,
-      primary: false,
-      childAspectRatio: 2,
+    return Column(
       children: [
-        for (var i = 0; i < (_shuffled?.length ?? 0); i++)
-          Container(
-            padding: const EdgeInsets.only(bottom: 6.0),
-            child: WordButton(
-              payload: _shuffled![i],
-              pos: i % 2,
-              predicate: predicate,
-              onPressed: (){
-                _select(_shuffled![i]);
-              },
-            ),
-          )
+        Expanded(
+          child: GridView.count(
+            crossAxisCount: 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 10,
+            primary: false,
+            childAspectRatio: 2,
+            children: [
+              for (var i = 0; i < (_shuffled?.length ?? 0); i++)
+                Container(
+                  padding: const EdgeInsets.only(bottom: 6.0),
+                  child: WordButton(
+                      payload: _shuffled![i],
+                      pos: i % 2,
+                      predicate:
+                          (predicate != null ? _shuffled![predicate!] : null),
+                      onPressed: () {
+                        _select(i);
+                      },
+                      isError: errorSet.contains(i),
+                      isSuccess: succeededSet.contains(i)),
+                )
+            ],
+          ),
+        ),
+        SizedBox(
+          width: double.infinity,
+          child: FancyButton(
+            onPressed: () {
+              _shuffle();
+            },
+            size: 40,
+            child: const Text(
+              "Chơi lại",
+              style: TextStyle(fontSize: 18),
+            )))
       ],
     );
   }
@@ -154,12 +204,20 @@ class _MixAndMatchGameState extends State<_MixAndMatchGame> {
 
 class WordButton extends StatelessWidget {
   const WordButton(
-      {super.key, required this.payload, required this.pos, this.predicate, required this.onPressed});
+      {super.key,
+      required this.payload,
+      required this.pos,
+      this.predicate,
+      required this.onPressed,
+      required this.isError,
+      required this.isSuccess});
 
   final _ButtonPayload payload;
   final _ButtonPayload? predicate;
   final int pos;
   final VoidCallback onPressed;
+  final bool isError;
+  final bool isSuccess;
 
   bool get tapped {
     return predicate == payload;
@@ -170,10 +228,20 @@ class WordButton extends StatelessWidget {
     return FancyButton(
       onPressed: onPressed,
       size: 30,
-      backgroundColor:
-          tapped ? FancyButtonColors.pressedBg : FancyButtonColors.unpressedBg,
-      foregroundColor:
-          tapped ? FancyButtonColors.pressedFg : FancyButtonColors.unpressedFg,
+      backgroundColor: isSuccess
+          ? FancyButtonColors.successBg
+          : isError
+              ? FancyButtonColors.errorBg
+              : (tapped
+                  ? FancyButtonColors.pressedBg
+                  : FancyButtonColors.unpressedBg),
+      foregroundColor: isSuccess
+          ? FancyButtonColors.successFg
+          : isError
+              ? FancyButtonColors.errorFg
+              : (tapped
+                  ? FancyButtonColors.pressedFg
+                  : FancyButtonColors.unpressedFg),
       child: Text(
         payload.item1,
         style: TextStyle(

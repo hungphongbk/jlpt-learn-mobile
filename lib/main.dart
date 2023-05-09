@@ -16,23 +16,23 @@ void main() async {
   runApp(const MyApp());
 }
 
+final router = GoRouter(routes: [
+  GoRoute(path: '/', builder: (context, state) => const LoginPage()),
+  GoRoute(
+    path: '/play',
+    builder: (context, state) => const PlayPage(),
+  ),
+  GoRoute(
+      path: '/game',
+      name: 'game',
+      builder: (context, state) => MixAndMatchPage(
+        gameType: GameType.values
+            .byName(state.queryParameters['gameType']!),
+      ))
+], debugLogDiagnostics: true);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  static GoRouter get _router => GoRouter(routes: [
-        GoRoute(path: '/', builder: (context, state) => const LoginPage()),
-        GoRoute(
-          path: '/play',
-          builder: (context, state) => const PlayPage(),
-        ),
-        GoRoute(
-            path: '/game',
-            name: 'game',
-            builder: (context, state) => MixAndMatchPage(
-                  gameType: GameType.values
-                      .byName(state.queryParameters['gameType']!),
-                ))
-      ], debugLogDiagnostics: true);
 
   // This widget is the root of your application.
   @override
@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             fontFamily: 'NotoSans',
           ),
-          routerConfig: _router,
+          routerConfig: router,
         ));
   }
 }

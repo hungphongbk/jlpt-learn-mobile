@@ -1,3 +1,4 @@
+// ignore_for_file: type=lint
 class Input$ArrayStringComparator {
   factory Input$ArrayStringComparator({
     List<String>? arrayContains,

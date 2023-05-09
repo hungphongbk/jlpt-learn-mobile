@@ -1,4 +1,4 @@
-query MobileQueryForGame{
+query MobileGame{
     words{
         word
         pronounce

@@ -3,6 +3,8 @@ targets:
     builders:
       graphql_codegen:
         options:
+          assetPath: lib/schema/**.graphql
+          generatedFileHeader: "// ignore_for_file: type=lint\n"
           clients:
             - graphql
             - graphql_flutter

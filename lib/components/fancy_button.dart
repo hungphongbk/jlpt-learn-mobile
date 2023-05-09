@@ -9,7 +9,9 @@ class FancyButton extends StatefulWidget {
       this.onPressed,
       this.statesController,
       this.style,
-      this.disabled = false})
+      this.disabled = false,
+      this.backgroundColor,
+      this.foregroundColor})
       : super(key: key);
 
   final Widget child;
@@ -18,6 +20,8 @@ class FancyButton extends StatefulWidget {
   final ButtonStyle? style;
   final MaterialStatesController? statesController;
   final bool disabled;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
 
   final double size;
 
@@ -161,14 +165,19 @@ class _FancyButtonState extends State<FancyButton>
       );
     }
 
-    Color? resolvedBackgroundColor = resolve<Color?>((ButtonStyle? style) =>
-        widget.disabled
-            ? MaterialStateProperty.all(const Color(0xFF9E9E9E))
-            : style?.backgroundColor);
+    Color? resolvedBackgroundColor = widget.disabled
+        ? const Color(0xFF9E9E9E)
+        : widget.backgroundColor ??
+            resolve<Color?>((ButtonStyle? style) => style?.backgroundColor);
     final TextStyle? resolvedTextStyle =
         resolve<TextStyle?>((ButtonStyle? style) => style?.textStyle);
-    final Color? resolvedForegroundColor =
-        resolve<Color?>((ButtonStyle? style) => style?.foregroundColor);
+    final Color? resolvedForegroundColor = widget.disabled
+        ? const Color(0xFFE0E0E0)
+        : widget.foregroundColor ??
+            resolve<Color?>((ButtonStyle? style) => style?.foregroundColor);
+
+    final inner = buildInnerButton(
+        resolvedBackgroundColor, radius, vertPadding, horzPadding);
 
     return Container(
         padding: widget.onPressed != null
@@ -177,66 +186,72 @@ class _FancyButtonState extends State<FancyButton>
         child: Material(
           textStyle:
               resolvedTextStyle?.copyWith(color: resolvedForegroundColor),
-          child: GestureDetector(
-            onTapDown: _onTapDown,
-            onTapUp: _onTapUp,
-            onTapCancel: _onTapCancel,
-            child: IntrinsicWidth(
-              child: IntrinsicHeight(
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: _hslRelativeColor(
-                            s: -0.10, l: -0.15, color: resolvedBackgroundColor),
-                        borderRadius: radius,
-                      ),
-                    ),
-                    AnimatedBuilder(
-                      animation: _pressedAnimation!,
-                      builder: (BuildContext context, Widget? child) {
-                        return Transform.translate(
-                          offset: Offset(0.0, _pressedAnimation!.value),
-                          child: child,
-                        );
-                      },
-                      child: Stack(
-                        children: <Widget>[
-                          ClipRRect(
-                            borderRadius: radius,
-                            child: Stack(
-                              children: <Widget>[
-                                DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    color: _hslRelativeColor(
-                                        l: 0.06,
-                                        color: resolvedBackgroundColor),
-                                    borderRadius: radius,
-                                  ),
-                                  child: const SizedBox.expand(),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: vertPadding,
-                              horizontal: horzPadding,
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: widget.child,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
+          child: widget.disabled
+              ? inner
+              : GestureDetector(
+                  onTapDown: _onTapDown,
+                  onTapUp: _onTapUp,
+                  onTapCancel: _onTapCancel,
+                  child: inner,
                 ),
+        ));
+  }
+
+  IntrinsicWidth buildInnerButton(Color? resolvedBackgroundColor,
+      BorderRadius radius, double vertPadding, double horzPadding) {
+    return IntrinsicWidth(
+      child: IntrinsicHeight(
+        child: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: _hslRelativeColor(
+                    s: -0.10, l: -0.10, color: resolvedBackgroundColor),
+                borderRadius: radius,
               ),
             ),
-          ),
-        ));
+            AnimatedBuilder(
+              animation: _pressedAnimation!,
+              builder: (BuildContext context, Widget? child) {
+                return Transform.translate(
+                  offset: Offset(0.0, _pressedAnimation!.value),
+                  child: child,
+                );
+              },
+              child: Stack(
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: radius,
+                    child: Stack(
+                      children: <Widget>[
+                        DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: _hslRelativeColor(
+                                l: 0.06, color: resolvedBackgroundColor),
+                            borderRadius: radius,
+                          ),
+                          child: const SizedBox.expand(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: vertPadding,
+                      horizontal: horzPadding,
+                    ),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: widget.child,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Color _hslRelativeColor({double h = 0.0, s = 0.0, l = 0.0, required color}) {

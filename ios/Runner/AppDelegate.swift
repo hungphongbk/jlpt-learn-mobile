@@ -9,6 +9,9 @@ import Firebase
     var show: Bool = false
     var flutterResult: FlutterResult?
     
+    @Published var _initialWord: String = ""
+    var initialWord: Published<String>.Publisher { $_initialWord }
+    
     override func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -26,6 +29,8 @@ import Firebase
             (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
             if ("showSheet" == call.method) {
                 self.flutterResult = result
+                print((call.arguments as? String)!)
+                self._initialWord = (call.arguments as? String)!
                 controller.present(addNewWordController, animated: true, completion: nil)
             } else {
                 result(FlutterMethodNotImplemented)

@@ -13,6 +13,7 @@ import JlptLearn
 
 protocol AddNewWordDelegate{
     var show: Bool { get set }
+    var initialWord: Published<String>.Publisher { get }
 }
 
 protocol PLabelledTextField{
@@ -33,34 +34,6 @@ struct LabelledTextField<T: View>: View{
         }
     }
 }
-//struct JpTextField:UIViewControllerRepresentable{
-//    func updateUIViewController(_ uiViewController: UIInputViewController, context: Context) {
-//        
-//    }
-//    
-//    @ViewBuilder var content:some View {
-//        EmptyView()
-//    }
-////    override var primaryLanguage: String? {
-////        get{
-////            return "ja"
-////        }
-////        set{
-////            //
-////        }
-////    }
-////    override func viewDidLoad(){
-////        super.viewDidLoad();
-////        let keyboardController = UIHostingController(rootView: content)
-////        view.addSubview(keyboardController.view)
-////    }
-//    
-//    func makeUIViewController(context: Context) -> UIInputViewController {
-//            let pageViewController = UIInputViewController()
-//            pageViewController.primaryLanguage="ja"
-//            return pageViewController
-//        }
-//}
 
 struct WordListView:View{
     var body: some View{
@@ -69,7 +42,7 @@ struct WordListView:View{
 }
 
 struct AddNewWordUIView: View {
-    var delegate:AddNewWordDelegate? = nil
+    var delegate:AddNewWordDelegate
     let apolloClient = ApolloClient(url: URL(string: "https://jlpt-learn-hungphongbk.vercel.app/api/graphql")!)
     
     @State private var word: String = ""
@@ -101,7 +74,9 @@ struct AddNewWordUIView: View {
                             }
                         }).onChange(of: word){value in
                             print(value)
-                        }
+                        }.onReceive(delegate.initialWord, perform: {
+                            self.word = $0
+                        })
                         LabelledTextField(label: "Kana", text: $pronounce,right:{
                             EmptyView()
                         })
@@ -114,10 +89,17 @@ struct AddNewWordUIView: View {
     }
 }
 
+class EmptyDelegate:AddNewWordDelegate{
+    var show: Bool = false
+    
+    @Published var _initialWord: String = ""
+    var initialWord: Published<String>.Publisher { $_initialWord }
+}
 struct AddNewWordUIView_Previews: PreviewProvider {
+    static let delegate = EmptyDelegate()
     static var previews: some View {
         VStack{
-            AddNewWordUIView()
+            AddNewWordUIView(delegate: delegate)
         }
     }
 }

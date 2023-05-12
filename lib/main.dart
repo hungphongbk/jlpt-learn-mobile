@@ -6,10 +6,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:jlpt_learn/context/add_new_word.dart';
 import 'package:jlpt_learn/screens/login_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jlpt_learn/screens/mix_and_match_page.dart';
 import 'package:jlpt_learn/screens/play_page.dart';
+import 'package:provider/provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'firebase_options.dart';
 
@@ -32,9 +34,9 @@ final router = GoRouter(routes: [
       path: '/game',
       name: 'game',
       builder: (context, state) => MixAndMatchPage(
-        gameType: GameType.values
-            .byName(state.queryParameters['gameType']!),
-      ))
+            gameType:
+                GameType.values.byName(state.queryParameters['gameType']!),
+          ))
 ], debugLogDiagnostics: true);
 
 class MyApp extends StatefulWidget {
@@ -46,45 +48,24 @@ class MyApp extends StatefulWidget {
   }
 }
 
-class _MyApp extends State<MyApp>{
-  StreamSubscription? streamConnectionStatus;
+class _MyApp extends State<MyApp> {
+  late AddNewWord addNewWord;
 
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      if (kDebugMode) {
-        print("Listening...");
-      }
-      listenShareText(context);
-    });
-  }
-  void listenShareText(BuildContext context) {
-    streamConnectionStatus = ReceiveSharingIntent.getTextStream().listen((String value) {
-      // if (kDebugMode) {
-        print("WTF $value");
-      // }
-      _methodChannel.invokeMethod('showSheet');
-    }, onError: (err) {
-      debugPrint("$err");
-    });
+    addNewWord = AddNewWord();
+    addNewWord.init(context);
   }
 
   @override
   void dispose() {
-    try {
-      streamConnectionStatus?.cancel();
-    } catch (exception) {
-      if (kDebugMode) {
-        print(exception.toString());
-      }
-    } finally {
-      super.dispose();
-    }
+    addNewWord.dispose();
+    super.dispose();
   }
 
   static const MethodChannel _methodChannel =
-  MethodChannel('com.jlptlearn.mixandmatch/add_new_word');
+      MethodChannel('com.jlptlearn.mixandmatch/add_new_word');
 
   // This widget is the root of your application.
   @override
@@ -102,13 +83,18 @@ class _MyApp extends State<MyApp>{
     );
     return GraphQLProvider(
         client: client,
-        child: MaterialApp.router(
-          title: 'JLPT Learn',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-            fontFamily: 'NotoSans',
+        child: MultiProvider(
+          providers: [
+            Provider(create: (context) => addNewWord),
+          ],
+          child: MaterialApp.router(
+            title: 'JLPT Learn',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+              fontFamily: 'NotoSans',
+            ),
+            routerConfig: router,
           ),
-          routerConfig: router,
         ));
   }
 }

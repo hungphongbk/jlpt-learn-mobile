@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jlpt_learn/components/fancy_button.dart';
+import 'package:jlpt_learn/context/add_new_word.dart';
 import 'package:jlpt_learn/screens/mix_and_match_page.dart';
+import 'package:provider/provider.dart';
 
 class PlayPage extends StatefulWidget {
   const PlayPage({super.key});
@@ -70,7 +72,9 @@ class _PlayPageState extends State<PlayPage> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Mix and match'), actions: [
-        IconButton(icon: const Icon(Icons.add), onPressed: _showAddButtonSheet)
+        Consumer<AddNewWord>(
+            builder: (context, hub, child) => IconButton(
+                icon: const Icon(Icons.add), onPressed: () => hub.show()))
       ]),
       body: Padding(
           padding: const EdgeInsets.only(

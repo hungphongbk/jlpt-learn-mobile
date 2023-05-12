@@ -35,12 +35,6 @@ struct LabelledTextField<T: View>: View{
     }
 }
 
-struct WordListView:View{
-    var body: some View{
-        Text("ahihi")
-    }
-}
-
 struct AddNewWordUIView: View {
     var delegate:AddNewWordDelegate
     let apolloClient = ApolloClient(url: URL(string: "https://jlpt-learn-hungphongbk.vercel.app/api/graphql")!)
@@ -49,8 +43,13 @@ struct AddNewWordUIView: View {
     @State private var pronounce: String = ""
     @State private var explain:String = ""
     
+    @State private var list: [Datum] = []
+    
     func fetch(){
-        apolloClient.fetch(query: JDictQuery(word: word))
+        apolloClient.fetch(query: JDictQuery(word: word)){result in
+            guard let data = try? result.get().data else { return }
+            self.list = data.jdictSearchWord.data
+        }
     }
     
     var body: some View {
@@ -65,15 +64,17 @@ struct AddNewWordUIView: View {
                 Form{
                     Section(header: Text("Từ mới")){
                         LabelledTextField(label: "Từ mới", text: $word, right: {
-                            if /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/ {
+                            if list.count>0 {
                                 NavigationLink(""){
-                                    WordListView()
+                                    SuggestView(data: list)
                                 }.frame(width: 40)
                             } else {
                                 /*@START_MENU_TOKEN@*/EmptyView()/*@END_MENU_TOKEN@*/
                             }
                         }).onChange(of: word){value in
-                            print(value)
+                            if word.count>0{
+                                fetch()
+                            }
                         }.onReceive(delegate.initialWord, perform: {
                             self.word = $0
                         })

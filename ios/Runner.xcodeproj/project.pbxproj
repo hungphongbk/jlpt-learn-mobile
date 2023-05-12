@@ -17,6 +17,7 @@
 		8827742E2A0E3BFA00686537 /* JLPT Learn Share Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 882774242A0E3BFA00686537 /* JLPT Learn Share Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		882774372A0E5FEF00686537 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 882774352A0E5FEF00686537 /* MainInterface.storyboard */; };
 		88ACA9A92A0D76D900BEE203 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 88ACA9A82A0D76D900BEE203 /* Apollo */; };
+		88D2CE1D2A0EB0DA00342A6B /* SuggestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D2CE1C2A0EB0DA00342A6B /* SuggestView.swift */; };
 		88EED3DF2A0D8BFF00F99B48 /* JlptLearn in Frameworks */ = {isa = PBXBuildFile; productRef = 88EED3DE2A0D8BFF00F99B48 /* JlptLearn */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
@@ -77,6 +78,7 @@
 		8827742B2A0E3BFA00686537 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		882774342A0E3C3200686537 /* JLPT Learn Share Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "JLPT Learn Share Extension.entitlements"; sourceTree = "<group>"; };
 		882774362A0E5FEF00686537 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		88D2CE1C2A0EB0DA00342A6B /* SuggestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestView.swift; sourceTree = "<group>"; };
 		88EED3DD2A0D8B3E00F99B48 /* JlptLearn */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = JlptLearn; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 				881C2C3A2A0CDCCE009325BD /* AddNewWordUIView.swift */,
+				88D2CE1C2A0EB0DA00342A6B /* SuggestView.swift */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
+				88D2CE1D2A0EB0DA00342A6B /* SuggestView.swift in Sources */,
 				881C2C3B2A0CDCCE009325BD /* AddNewWordUIView.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 			);

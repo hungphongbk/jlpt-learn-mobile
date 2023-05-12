@@ -1,0 +1,9 @@
+query JDict($word:String!){
+    jdictSearchWord(word: $word){
+        data {
+            word
+            kana
+            suggest_mean
+        }
+    }
+}

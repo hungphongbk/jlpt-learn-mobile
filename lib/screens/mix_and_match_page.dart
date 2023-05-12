@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:graphql/client.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:jlpt_learn/components/fancy_button.dart';
@@ -8,7 +9,7 @@ import 'package:tuple/tuple.dart';
 enum GameType { kanjiToText, kanaToText, kanjiToKana }
 
 abstract class FancyButtonColors {
-  static const Color unpressedBg = Color(0xFFE0E0E0);
+  static const Color unpressedBg = Color(0xFFF0F0F0);
   static const Color unpressedFg = Color(0xFF424242);
 
   // teal
@@ -45,6 +46,9 @@ class MixAndMatchPage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Mix and match'),
+          leading: BackButton(
+            onPressed: () => context.pop(),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 28.0),
@@ -167,7 +171,7 @@ class _MixAndMatchGameState extends State<_MixAndMatchGame> {
             crossAxisSpacing: 16,
             mainAxisSpacing: 10,
             primary: false,
-            childAspectRatio: 2,
+            childAspectRatio: 1.75,
             children: [
               for (var i = 0; i < (_shuffled?.length ?? 0); i++)
                 Container(
@@ -187,16 +191,16 @@ class _MixAndMatchGameState extends State<_MixAndMatchGame> {
           ),
         ),
         SizedBox(
-          width: double.infinity,
-          child: FancyButton(
-            onPressed: () {
-              _shuffle();
-            },
-            size: 40,
-            child: const Text(
-              "Chơi lại",
-              style: TextStyle(fontSize: 18),
-            )))
+            width: double.infinity,
+            child: FancyButton(
+                onPressed: () {
+                  _shuffle();
+                },
+                size: 40,
+                child: const Text(
+                  "Chơi lại",
+                  style: TextStyle(fontSize: 18),
+                )))
       ],
     );
   }
@@ -228,6 +232,7 @@ class WordButton extends StatelessWidget {
     return FancyButton(
       onPressed: onPressed,
       size: 30,
+      outlinedSize: 2,
       backgroundColor: isSuccess
           ? FancyButtonColors.successBg
           : isError
@@ -246,7 +251,7 @@ class WordButton extends StatelessWidget {
         payload.item1,
         style: TextStyle(
             fontFamily: pos == 0 ? 'NotoSansJP' : 'NotoSans',
-            fontSize: pos == 0 ? 20 : 14,
+            fontSize: pos == 0 ? 20 : 16,
             fontWeight: FontWeight.w400),
       ),
     );

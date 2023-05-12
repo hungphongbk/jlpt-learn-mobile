@@ -5,6 +5,31 @@ schema {
     mutation: Mutation
 }
 
+type JDictAPIResult {
+    data: [JDictWord!]!
+}
+
+type JDictWord {
+    id: Int!
+    kana: String!
+    slug: String!
+    suggest_mean: String!
+    word: String!
+}
+
+type JishoAPIResult {
+    data: [JishoResult!]!
+}
+
+type JishoJapaneseWord {
+    reading: String
+    word: String
+}
+
+type JishoResult {
+    japanese: [JishoJapaneseWord!]!
+}
+
 type Kanji {
     hv: String
     id: String!
@@ -16,7 +41,10 @@ type Mutation {
 }
 
 type Query {
+    jdictSearchWord(word: String!): JDictAPIResult!
+    jishoSearchWord(word: String!): JishoAPIResult!
     kanji(id: String!): Kanji!
+    tags: [Tag!]
     word(id: String!): Word!
     words(where: WordQueryInput): [Word!]
 }

@@ -1,5 +1,7 @@
-schema: lib/schema.graphql
-include: lib/**
+schema: lib/schema/schema.graphqls
+include:
+  - lib/**
+  - ios/Runner/**/*.graphql
 extensions:
   endpoints:
     Production:

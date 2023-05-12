@@ -1,10 +1,16 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:jlpt_learn/screens/login_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jlpt_learn/screens/mix_and_match_page.dart';
 import 'package:jlpt_learn/screens/play_page.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -31,8 +37,54 @@ final router = GoRouter(routes: [
       ))
 ], debugLogDiagnostics: true);
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  _MyApp createState() {
+    return _MyApp();
+  }
+}
+
+class _MyApp extends State<MyApp>{
+  StreamSubscription? streamConnectionStatus;
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      if (kDebugMode) {
+        print("Listening...");
+      }
+      listenShareText(context);
+    });
+  }
+  void listenShareText(BuildContext context) {
+    streamConnectionStatus = ReceiveSharingIntent.getTextStream().listen((String value) {
+      // if (kDebugMode) {
+        print("WTF $value");
+      // }
+      _methodChannel.invokeMethod('showSheet');
+    }, onError: (err) {
+      debugPrint("$err");
+    });
+  }
+
+  @override
+  void dispose() {
+    try {
+      streamConnectionStatus?.cancel();
+    } catch (exception) {
+      if (kDebugMode) {
+        print(exception.toString());
+      }
+    } finally {
+      super.dispose();
+    }
+  }
+
+  static const MethodChannel _methodChannel =
+  MethodChannel('com.jlptlearn.mixandmatch/add_new_word');
 
   // This widget is the root of your application.
   @override

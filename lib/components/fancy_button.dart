@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+@immutable
+class FancyButtonStyle extends ButtonStyle {}
+
 class FancyButton extends StatefulWidget {
   const FancyButton(
       {Key? key,
@@ -11,7 +14,8 @@ class FancyButton extends StatefulWidget {
       this.style,
       this.disabled = false,
       this.backgroundColor,
-      this.foregroundColor})
+      this.foregroundColor,
+      this.outlinedSize = 0})
       : super(key: key);
 
   final Widget child;
@@ -22,6 +26,7 @@ class FancyButton extends StatefulWidget {
   final bool disabled;
   final Color? backgroundColor;
   final Color? foregroundColor;
+  final int outlinedSize;
 
   final double size;
 
@@ -199,14 +204,16 @@ class _FancyButtonState extends State<FancyButton>
 
   IntrinsicWidth buildInnerButton(Color? resolvedBackgroundColor,
       BorderRadius radius, double vertPadding, double horzPadding) {
+    final shadowColor =
+        _hslRelativeColor(s: -0.10, l: -0.10, color: resolvedBackgroundColor);
+
     return IntrinsicWidth(
       child: IntrinsicHeight(
         child: Stack(
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                color: _hslRelativeColor(
-                    s: -0.10, l: -0.10, color: resolvedBackgroundColor),
+                color: shadowColor,
                 borderRadius: radius,
               ),
             ),
@@ -226,10 +233,12 @@ class _FancyButtonState extends State<FancyButton>
                       children: <Widget>[
                         DecoratedBox(
                           decoration: BoxDecoration(
-                            color: _hslRelativeColor(
-                                l: 0.06, color: resolvedBackgroundColor),
-                            borderRadius: radius,
-                          ),
+                              color: _hslRelativeColor(
+                                  l: 0.06, color: resolvedBackgroundColor),
+                              borderRadius: radius,
+                              border: Border.all(
+                                  width: widget.outlinedSize.toDouble(),
+                                  color: shadowColor)),
                           child: const SizedBox.expand(),
                         ),
                       ],

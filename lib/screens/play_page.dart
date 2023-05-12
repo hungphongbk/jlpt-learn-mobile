@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jlpt_learn/components/fancy_button.dart';
 import 'package:jlpt_learn/screens/mix_and_match_page.dart';
@@ -11,7 +12,30 @@ class PlayPage extends StatefulWidget {
 }
 
 class _PlayPageState extends State<PlayPage> {
+  @override
+  void initState() {
+    super.initState();
+    // SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+    //   listenShareText(context);
+    // });
+  }
+
   GameType? _selected;
+
+  // void listenShareText(BuildContext context) {
+  //   ReceiveSharingIntent.getTextStream().listen((String value) {
+  //     _methodChannel.invokeMethod('showSheet');
+  //   }, onError: (err) {
+  //     debugPrint("$err");
+  //   });
+  // }
+
+  // static const MethodChannel _methodChannel =
+  //     MethodChannel('com.jlptlearn.mixandmatch/add_new_word');
+
+  Future<void> _showAddButtonSheet() async {
+    // final platformCounter = await _methodChannel.invokeMethod('showSheet');
+  }
 
   Widget _button(GameType key, String child, [String? label]) {
     final ThemeData theme = Theme.of(context);
@@ -45,12 +69,9 @@ class _PlayPageState extends State<PlayPage> {
     // final ThemeData theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mix and match'),
-        // backgroundColor: Colors.transparent,
-        // foregroundColor: theme.colorScheme.primary,
-        // shadowColor: Colors.transparent,
-      ),
+      appBar: AppBar(title: const Text('Mix and match'), actions: [
+        IconButton(icon: const Icon(Icons.add), onPressed: _showAddButtonSheet)
+      ]),
       body: Padding(
           padding: const EdgeInsets.only(
               left: 24.0, right: 24.0, top: 24.0, bottom: 28.0),
@@ -75,7 +96,7 @@ class _PlayPageState extends State<PlayPage> {
                     size: 40,
                     disabled: _selected == null,
                     onPressed: () {
-                      context.goNamed('game',
+                      context.pushNamed('game',
                           queryParameters: {'gameType': _selected!.name});
                     },
                     child:

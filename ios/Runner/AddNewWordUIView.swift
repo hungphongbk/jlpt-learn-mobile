@@ -83,7 +83,7 @@ struct AddNewWordUIView: View {
                             ],spacing: 4) {
                                 ForEach(payload.kanjis, id: \.id) {
                                     kanji in ZStack{
-                                        Rectangle().fill(.black).opacity(0.12).aspectRatio(1.0,contentMode: .fill)
+                                        Rectangle().fill(.black).opacity(0.12).aspectRatio(1.0,contentMode: .fill).cornerRadius(4.0)
                                         VStack(spacing: 8){
                                             Text(kanji.id).font(.largeTitle)
                                             Text(kanji.hv).font(.caption2)

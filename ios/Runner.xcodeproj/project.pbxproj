@@ -16,6 +16,8 @@
 		882774272A0E3BFA00686537 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 882774262A0E3BFA00686537 /* ShareViewController.swift */; };
 		8827742E2A0E3BFA00686537 /* JLPT Learn Share Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 882774242A0E3BFA00686537 /* JLPT Learn Share Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		882774372A0E5FEF00686537 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 882774352A0E5FEF00686537 /* MainInterface.storyboard */; };
+		88449CED2A101BA8007326A1 /* KanjiEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88449CEC2A101BA8007326A1 /* KanjiEdit.swift */; };
+		88449CF02A101BE3007326A1 /* WordPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88449CEF2A101BE3007326A1 /* WordPayload.swift */; };
 		88ACA9A92A0D76D900BEE203 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 88ACA9A82A0D76D900BEE203 /* Apollo */; };
 		88D2CE1D2A0EB0DA00342A6B /* SuggestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D2CE1C2A0EB0DA00342A6B /* SuggestView.swift */; };
 		88EED3DF2A0D8BFF00F99B48 /* JlptLearn in Frameworks */ = {isa = PBXBuildFile; productRef = 88EED3DE2A0D8BFF00F99B48 /* JlptLearn */; };
@@ -78,6 +80,8 @@
 		8827742B2A0E3BFA00686537 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		882774342A0E3C3200686537 /* JLPT Learn Share Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "JLPT Learn Share Extension.entitlements"; sourceTree = "<group>"; };
 		882774362A0E5FEF00686537 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		88449CEC2A101BA8007326A1 /* KanjiEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiEdit.swift; sourceTree = "<group>"; };
+		88449CEF2A101BE3007326A1 /* WordPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPayload.swift; sourceTree = "<group>"; };
 		88D2CE1C2A0EB0DA00342A6B /* SuggestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestView.swift; sourceTree = "<group>"; };
 		88EED3DD2A0D8B3E00F99B48 /* JlptLearn */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = JlptLearn; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
@@ -148,6 +152,23 @@
 			path = "JLPT Learn Share Extension";
 			sourceTree = "<group>";
 		};
+		88449CEB2A101B74007326A1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				88D2CE1C2A0EB0DA00342A6B /* SuggestView.swift */,
+				88449CEC2A101BA8007326A1 /* KanjiEdit.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		88449CEE2A101BCE007326A1 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				88449CEF2A101BE3007326A1 /* WordPayload.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		88EED3DC2A0D8B3E00F99B48 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +214,8 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				88449CEE2A101BCE007326A1 /* Models */,
+				88449CEB2A101B74007326A1 /* Views */,
 				8827741F2A0E3AB200686537 /* Runner.entitlements */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
@@ -203,7 +226,6 @@
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 				881C2C3A2A0CDCCE009325BD /* AddNewWordUIView.swift */,
-				88D2CE1C2A0EB0DA00342A6B /* SuggestView.swift */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -430,6 +452,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
+				88449CED2A101BA8007326A1 /* KanjiEdit.swift in Sources */,
+				88449CF02A101BE3007326A1 /* WordPayload.swift in Sources */,
 				88D2CE1D2A0EB0DA00342A6B /* SuggestView.swift in Sources */,
 				881C2C3B2A0CDCCE009325BD /* AddNewWordUIView.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,

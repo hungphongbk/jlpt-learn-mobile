@@ -101,7 +101,7 @@ struct SuggestView: View {
                         payload.pronounce = selection!.kana
                         payload.explain = selection!.suggest_mean
                         payload.kanjis = selection!.kanjis.map{ k in
-                            WordPayload.Kanji(id: k.kanji, hv: k.hanviet)
+                            WordPayload.Kanji(id: k.kanji, hv: k.hanviet.lowercased())
                         }
                         
                         dismiss()

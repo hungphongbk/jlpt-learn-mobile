@@ -4,6 +4,20 @@ import SwiftUI
 import Flutter
 import Firebase
 
+extension View {
+  func embeddedInHostingController() -> UIHostingController<some View> {
+    let provider = ViewControllerProvider()
+    let hostingAccessingView = environmentObject(provider)
+    let hostingController = UIHostingController(rootView: hostingAccessingView)
+    provider.viewController = hostingController
+    return hostingController
+  }
+}
+
+final class ViewControllerProvider: ObservableObject {
+  fileprivate(set) weak var viewController: UIViewController?
+}
+
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate,AddNewWordDelegate {
     var show: Bool = false
@@ -27,12 +41,12 @@ import Firebase
         
         let channel = FlutterMethodChannel.init(name: "com.jlptlearn.mixandmatch/add_new_word", binaryMessenger: controller.binaryMessenger)
         
-        let view = AddNewWordUIView(delegate: self)
-        let addNewWordController = UIHostingController(rootView: view)
-        
         channel.setMethodCallHandler({
             (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
             if ("showSheet" == call.method) {
+                let view = AddNewWordUIView(delegate: self)
+                let addNewWordController = view.embeddedInHostingController()
+                
                 self.controller.present(addNewWordController, animated: true, completion: nil)
                 self.flutterResult = result
                 print((call.arguments as? String)!)

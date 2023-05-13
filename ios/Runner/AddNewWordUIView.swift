@@ -35,18 +35,9 @@ struct LabelledTextField<T: View>: View{
     }
 }
 
-class WordPayload:ObservableObject{
-    struct Kanji{
-        var id = ""
-        var hv = ""
-    }
-    @Published var word = ""
-    @Published var pronounce = ""
-    @Published var explain = ""
-    @Published var kanjis: [Kanji] = []
-}
-
 struct AddNewWordUIView: View {
+    @EnvironmentObject var hostingProvider: ViewControllerProvider
+
     var delegate:AddNewWordDelegate
     
     @StateObject private var payload = WordPayload()
@@ -82,13 +73,8 @@ struct AddNewWordUIView: View {
                                 GridItem(.flexible()),
                             ],spacing: 4) {
                                 ForEach(payload.kanjis, id: \.id) {
-                                    kanji in ZStack{
-                                        Rectangle().fill(.black).opacity(0.12).aspectRatio(1.0,contentMode: .fill).cornerRadius(4.0)
-                                        VStack(spacing: 8){
-                                            Text(kanji.id).font(.largeTitle)
-                                            Text(kanji.hv).font(.caption2)
-                                        }
-                                    }
+                                    kanji in
+                                    KanjiButton(kanji: kanji)
                                 }
                             }
                         }
@@ -96,7 +82,15 @@ struct AddNewWordUIView: View {
                 }
                 Spacer()
             }
-            .navigationBarTitle(Text("Thêm từ mới"),displayMode: .inline)
+            .navigationBarTitle(Text("Từ mới"),displayMode: .inline)
+            .toolbar {
+                ToolbarItem(placement:.navigationBarTrailing) {
+                    Button("Thêm"){
+                        //
+                        hostingProvider.viewController?.dismiss(animated: true)
+                    }
+                }
+            }
         }
     }
 }

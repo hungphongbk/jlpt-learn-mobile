@@ -1,0 +1,6 @@
+mutation AddNewWord($word: WordInsertInput!,$kanjis:[KanjiUpsertInputPair!]!) {
+    upsertKanjis(kanjis: $kanjis)
+    addNewWord(word: $word) {
+        id
+    }
+}

@@ -35,57 +35,68 @@ struct LabelledTextField<T: View>: View{
     }
 }
 
+class WordPayload:ObservableObject{
+    struct Kanji{
+        var id = ""
+        var hv = ""
+    }
+    @Published var word = ""
+    @Published var pronounce = ""
+    @Published var explain = ""
+    @Published var kanjis: [Kanji] = []
+}
+
 struct AddNewWordUIView: View {
     var delegate:AddNewWordDelegate
-    let apolloClient = ApolloClient(url: URL(string: "https://jlpt-learn-hungphongbk.vercel.app/api/graphql")!)
     
-    @State private var word: String = ""
-    @State private var pronounce: String = ""
-    @State private var explain:String = ""
+    @StateObject private var payload = WordPayload()
     
     @State private var list: [Datum] = []
-    
-    func fetch(){
-        apolloClient.fetch(query: JDictQuery(word: word)){result in
-            guard let data = try? result.get().data else { return }
-            self.list = data.jdictSearchWord.data
-        }
-    }
     
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading) {
-                HStack {
-                    Text("Thêm từ mới")
-                        .font(.largeTitle)
-                    Spacer()
-                }
-                .padding()
                 Form{
                     Section(header: Text("Từ mới")){
-                        LabelledTextField(label: "Từ mới", text: $word, right: {
-                            if list.count>0 {
-                                NavigationLink(""){
-                                    SuggestView(data: list)
-                                }.frame(width: 40)
+                        LabelledTextField(label: "Từ mới", text: $payload.word, right: {
+                            if payload.word.count>0 {
+                                NavigationLink(destination: SuggestView(payload: payload), label: {
+                                    Text("")
+                                }).frame(width: 40)
                             } else {
                                 /*@START_MENU_TOKEN@*/EmptyView()/*@END_MENU_TOKEN@*/
                             }
-                        }).onChange(of: word){value in
-                            if word.count>0{
-                                fetch()
-                            }
-                        }.onReceive(delegate.initialWord, perform: {
-                            self.word = $0
+                        }).onReceive(delegate.initialWord, perform: {
+                            self.payload.word = $0
                         })
-                        LabelledTextField(label: "Kana", text: $pronounce,right:{
+                        LabelledTextField(label: "Kana", text: $payload.pronounce,right:{
                             EmptyView()
                         })
-                        TextField("Nghĩa",text:$explain,axis:.vertical)
+                        TextField("Nghĩa",text:$payload.explain,axis:.vertical)
+                    }
+                    if(!payload.kanjis.isEmpty){
+                        Section(header: Text("Hán tự")){
+                            LazyVGrid(columns: [
+                                GridItem(.flexible()),
+                                GridItem(.flexible()),
+                                GridItem(.flexible()),
+                            ],spacing: 4) {
+                                ForEach(payload.kanjis, id: \.id) {
+                                    kanji in ZStack{
+                                        Rectangle().fill(.black).opacity(0.12).aspectRatio(1.0,contentMode: .fill)
+                                        VStack(spacing: 8){
+                                            Text(kanji.id).font(.largeTitle)
+                                            Text(kanji.hv).font(.caption2)
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 Spacer()
             }
+            .navigationBarTitle(Text("Thêm từ mới"),displayMode: .inline)
         }
     }
 }

@@ -1,0 +1,6 @@
+query MobileGetOneKanji($id: String!) {
+    kanji(id: $id) {
+        id
+        hv
+    }
+}

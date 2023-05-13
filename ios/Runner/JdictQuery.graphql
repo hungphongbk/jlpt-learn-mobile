@@ -1,9 +1,15 @@
 query JDict($word:String!){
     jdictSearchWord(word: $word){
         data {
+            id
             word
             kana
             suggest_mean
+            kanjis {
+                id
+                kanji
+                hanviet
+            }
         }
     }
 }

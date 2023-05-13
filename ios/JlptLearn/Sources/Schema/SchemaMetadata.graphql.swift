@@ -22,9 +22,13 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
 
   public static func objectType(forTypename typename: String) -> Object? {
     switch typename {
+    case "Mutation": return JlptLearn.Objects.Mutation
+    case "Word": return JlptLearn.Objects.Word
     case "Query": return JlptLearn.Objects.Query
+    case "Kanji": return JlptLearn.Objects.Kanji
     case "JDictAPIResult": return JlptLearn.Objects.JDictAPIResult
     case "JDictWord": return JlptLearn.Objects.JDictWord
+    case "JDictKanji": return JlptLearn.Objects.JDictKanji
     default: return nil
     }
   }

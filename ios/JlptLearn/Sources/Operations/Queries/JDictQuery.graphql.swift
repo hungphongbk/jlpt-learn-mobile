@@ -13,9 +13,16 @@ public class JDictQuery: GraphQLQuery {
           __typename
           data {
             __typename
+            id
             word
             kana
             suggest_mean
+            kanjis {
+              __typename
+              id
+              kanji
+              hanviet
+            }
           }
         }
       }
@@ -66,14 +73,38 @@ public class JDictQuery: GraphQLQuery {
         public static var __parentType: ApolloAPI.ParentType { JlptLearn.Objects.JDictWord }
         public static var __selections: [ApolloAPI.Selection] { [
           .field("__typename", String.self),
+          .field("id", Int.self),
           .field("word", String.self),
           .field("kana", String.self),
           .field("suggest_mean", String.self),
+          .field("kanjis", [Kanji].self),
         ] }
 
+        public var id: Int { __data["id"] }
         public var word: String { __data["word"] }
         public var kana: String { __data["kana"] }
         public var suggest_mean: String { __data["suggest_mean"] }
+        public var kanjis: [Kanji] { __data["kanjis"] }
+
+        /// JdictSearchWord.Datum.Kanji
+        ///
+        /// Parent Type: `JDictKanji`
+        public struct Kanji: JlptLearn.SelectionSet {
+          public let __data: DataDict
+          public init(_dataDict: DataDict) { __data = _dataDict }
+
+          public static var __parentType: ApolloAPI.ParentType { JlptLearn.Objects.JDictKanji }
+          public static var __selections: [ApolloAPI.Selection] { [
+            .field("__typename", String.self),
+            .field("id", Int.self),
+            .field("kanji", String.self),
+            .field("hanviet", String.self),
+          ] }
+
+          public var id: Int { __data["id"] }
+          public var kanji: String { __data["kanji"] }
+          public var hanviet: String { __data["hanviet"] }
+        }
       }
     }
   }

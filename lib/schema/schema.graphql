@@ -54,7 +54,7 @@ type Query {
     kanji(id: String!): Kanji!
     tags: [Tag!]
     word(id: String!): Word!
-    words(where: WordQueryInput): [Word!]
+    words(limit: Int, where: WordQueryInput): [Word!]
 }
 
 type Tag {

@@ -4,6 +4,147 @@ import 'package:flutter/widgets.dart' as widgets;
 import 'package:gql/ast.dart';
 import 'package:graphql/client.dart' as graphql;
 import 'package:graphql_flutter/graphql_flutter.dart' as graphql_flutter;
+import 'schema.graphql.dart';
+
+class Variables$Query$MobileGame {
+  factory Variables$Query$MobileGame({
+    Input$WordQueryInput? where,
+    int? limit,
+  }) =>
+      Variables$Query$MobileGame._({
+        if (where != null) r'where': where,
+        if (limit != null) r'limit': limit,
+      });
+
+  Variables$Query$MobileGame._(this._$data);
+
+  factory Variables$Query$MobileGame.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    if (data.containsKey('where')) {
+      final l$where = data['where'];
+      result$data['where'] = l$where == null
+          ? null
+          : Input$WordQueryInput.fromJson((l$where as Map<String, dynamic>));
+    }
+    if (data.containsKey('limit')) {
+      final l$limit = data['limit'];
+      result$data['limit'] = (l$limit as int?);
+    }
+    return Variables$Query$MobileGame._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  Input$WordQueryInput? get where => (_$data['where'] as Input$WordQueryInput?);
+  int? get limit => (_$data['limit'] as int?);
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    if (_$data.containsKey('where')) {
+      final l$where = where;
+      result$data['where'] = l$where?.toJson();
+    }
+    if (_$data.containsKey('limit')) {
+      final l$limit = limit;
+      result$data['limit'] = l$limit;
+    }
+    return result$data;
+  }
+
+  CopyWith$Variables$Query$MobileGame<Variables$Query$MobileGame>
+      get copyWith => CopyWith$Variables$Query$MobileGame(
+            this,
+            (i) => i,
+          );
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Variables$Query$MobileGame) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$where = where;
+    final lOther$where = other.where;
+    if (_$data.containsKey('where') != other._$data.containsKey('where')) {
+      return false;
+    }
+    if (l$where != lOther$where) {
+      return false;
+    }
+    final l$limit = limit;
+    final lOther$limit = other.limit;
+    if (_$data.containsKey('limit') != other._$data.containsKey('limit')) {
+      return false;
+    }
+    if (l$limit != lOther$limit) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$where = where;
+    final l$limit = limit;
+    return Object.hashAll([
+      _$data.containsKey('where') ? l$where : const {},
+      _$data.containsKey('limit') ? l$limit : const {},
+    ]);
+  }
+}
+
+abstract class CopyWith$Variables$Query$MobileGame<TRes> {
+  factory CopyWith$Variables$Query$MobileGame(
+    Variables$Query$MobileGame instance,
+    TRes Function(Variables$Query$MobileGame) then,
+  ) = _CopyWithImpl$Variables$Query$MobileGame;
+
+  factory CopyWith$Variables$Query$MobileGame.stub(TRes res) =
+      _CopyWithStubImpl$Variables$Query$MobileGame;
+
+  TRes call({
+    Input$WordQueryInput? where,
+    int? limit,
+  });
+}
+
+class _CopyWithImpl$Variables$Query$MobileGame<TRes>
+    implements CopyWith$Variables$Query$MobileGame<TRes> {
+  _CopyWithImpl$Variables$Query$MobileGame(
+    this._instance,
+    this._then,
+  );
+
+  final Variables$Query$MobileGame _instance;
+
+  final TRes Function(Variables$Query$MobileGame) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? where = _undefined,
+    Object? limit = _undefined,
+  }) =>
+      _then(Variables$Query$MobileGame._({
+        ..._instance._$data,
+        if (where != _undefined) 'where': (where as Input$WordQueryInput?),
+        if (limit != _undefined) 'limit': (limit as int?),
+      }));
+}
+
+class _CopyWithStubImpl$Variables$Query$MobileGame<TRes>
+    implements CopyWith$Variables$Query$MobileGame<TRes> {
+  _CopyWithStubImpl$Variables$Query$MobileGame(this._res);
+
+  TRes _res;
+
+  call({
+    Input$WordQueryInput? where,
+    int? limit,
+  }) =>
+      _res;
+}
 
 class Query$MobileGame {
   Query$MobileGame({
@@ -163,13 +304,41 @@ const documentNodeQueryMobileGame = DocumentNode(definitions: [
   OperationDefinitionNode(
     type: OperationType.query,
     name: NameNode(value: 'MobileGame'),
-    variableDefinitions: [],
+    variableDefinitions: [
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'where')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'WordQueryInput'),
+          isNonNull: false,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      ),
+      VariableDefinitionNode(
+        variable: VariableNode(name: NameNode(value: 'limit')),
+        type: NamedTypeNode(
+          name: NameNode(value: 'Int'),
+          isNonNull: false,
+        ),
+        defaultValue: DefaultValueNode(value: null),
+        directives: [],
+      ),
+    ],
     directives: [],
     selectionSet: SelectionSetNode(selections: [
       FieldNode(
         name: NameNode(value: 'words'),
         alias: null,
-        arguments: [],
+        arguments: [
+          ArgumentNode(
+            name: NameNode(value: 'where'),
+            value: VariableNode(name: NameNode(value: 'where')),
+          ),
+          ArgumentNode(
+            name: NameNode(value: 'limit'),
+            value: VariableNode(name: NameNode(value: 'limit')),
+          ),
+        ],
         directives: [],
         selectionSet: SelectionSetNode(selections: [
           FieldNode(
@@ -222,6 +391,7 @@ typedef OnQueryComplete$Query$MobileGame = FutureOr<void> Function(
 class Options$Query$MobileGame extends graphql.QueryOptions<Query$MobileGame> {
   Options$Query$MobileGame({
     String? operationName,
+    Variables$Query$MobileGame? variables,
     graphql.FetchPolicy? fetchPolicy,
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
@@ -233,6 +403,7 @@ class Options$Query$MobileGame extends graphql.QueryOptions<Query$MobileGame> {
     graphql.OnQueryError? onError,
   })  : onCompleteWithParsed = onComplete,
         super(
+          variables: variables?.toJson() ?? {},
           operationName: operationName,
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
@@ -266,6 +437,7 @@ class WatchOptions$Query$MobileGame
     extends graphql.WatchQueryOptions<Query$MobileGame> {
   WatchOptions$Query$MobileGame({
     String? operationName,
+    Variables$Query$MobileGame? variables,
     graphql.FetchPolicy? fetchPolicy,
     graphql.ErrorPolicy? errorPolicy,
     graphql.CacheRereadPolicy? cacheRereadPolicy,
@@ -277,6 +449,7 @@ class WatchOptions$Query$MobileGame
     bool carryForwardDataOnException = true,
     bool fetchResults = false,
   }) : super(
+          variables: variables?.toJson() ?? {},
           operationName: operationName,
           fetchPolicy: fetchPolicy,
           errorPolicy: errorPolicy,
@@ -293,9 +466,12 @@ class WatchOptions$Query$MobileGame
 }
 
 class FetchMoreOptions$Query$MobileGame extends graphql.FetchMoreOptions {
-  FetchMoreOptions$Query$MobileGame({required graphql.UpdateQuery updateQuery})
-      : super(
+  FetchMoreOptions$Query$MobileGame({
+    required graphql.UpdateQuery updateQuery,
+    Variables$Query$MobileGame? variables,
+  }) : super(
           updateQuery: updateQuery,
+          variables: variables?.toJson() ?? {},
           document: documentNodeQueryMobileGame,
         );
 }
@@ -309,19 +485,26 @@ extension ClientExtension$Query$MobileGame on graphql.GraphQLClient {
       this.watchQuery(options ?? WatchOptions$Query$MobileGame());
   void writeQuery$MobileGame({
     required Query$MobileGame data,
+    Variables$Query$MobileGame? variables,
     bool broadcast = true,
   }) =>
       this.writeQuery(
         graphql.Request(
-            operation:
-                graphql.Operation(document: documentNodeQueryMobileGame)),
+          operation: graphql.Operation(document: documentNodeQueryMobileGame),
+          variables: variables?.toJson() ?? const {},
+        ),
         data: data.toJson(),
         broadcast: broadcast,
       );
-  Query$MobileGame? readQuery$MobileGame({bool optimistic = true}) {
+  Query$MobileGame? readQuery$MobileGame({
+    Variables$Query$MobileGame? variables,
+    bool optimistic = true,
+  }) {
     final result = this.readQuery(
       graphql.Request(
-          operation: graphql.Operation(document: documentNodeQueryMobileGame)),
+        operation: graphql.Operation(document: documentNodeQueryMobileGame),
+        variables: variables?.toJson() ?? const {},
+      ),
       optimistic: optimistic,
     );
     return result == null ? null : Query$MobileGame.fromJson(result);

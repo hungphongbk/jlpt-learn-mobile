@@ -1,5 +1,5 @@
-query MobileGame{
-    words{
+query MobileGame($where:WordQueryInput,$limit:Int){
+    words(where: $where, limit: $limit){
         word
         pronounce
         explain

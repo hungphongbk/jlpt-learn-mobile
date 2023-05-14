@@ -34,9 +34,9 @@ final router = GoRouter(routes: [
       path: '/game',
       name: 'game',
       builder: (context, state) => MixAndMatchPage(
-            gameType:
-                GameType.values.byName(state.queryParameters['gameType']!),
-          ))
+          gameType: GameType.values.byName(state.queryParameters['gameType']!),
+          count: int.parse(state.queryParameters['count']!),
+          tags: state.queryParameters['tags']!.split(',')))
 ], debugLogDiagnostics: true);
 
 class MyApp extends StatefulWidget {

@@ -4,6 +4,7 @@ import 'package:graphql/client.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:jlpt_learn/components/fancy_button.dart';
 import 'package:jlpt_learn/schema/mobile_game.graphql.dart';
+import 'package:jlpt_learn/schema/schema.graphql.dart';
 import 'package:tuple/tuple.dart';
 
 enum GameType { kanjiToText, kanaToText, kanjiToKana }
@@ -37,9 +38,11 @@ abstract class FancyButtonColors {
 // }
 
 class MixAndMatchPage extends StatelessWidget {
-  const MixAndMatchPage({super.key, required this.gameType});
+  const MixAndMatchPage({super.key, required this.gameType, required this.count, required this.tags});
 
   final GameType gameType;
+  final int count;
+  final List<String> tags;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +56,16 @@ class MixAndMatchPage extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.fromLTRB(16.0, 20.0, 16.0, 28.0),
           child: Query$MobileGame$Widget(
+            options: Options$Query$MobileGame(
+              variables: Variables$Query$MobileGame(
+                where: Input$WordQueryInput(
+                  tags: Input$ArrayStringComparator(
+                    arrayContainsAny: tags
+                  )
+                ),
+                limit: count
+              )
+            ),
             builder: (result, {fetchMore, refetch}) {
               if (result.parsedData != null) {
                 return _MixAndMatchGame(

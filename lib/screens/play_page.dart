@@ -8,7 +8,7 @@ import 'package:jlpt_learn/schema/list_metadata.graphql.dart';
 import 'package:jlpt_learn/screens/mix_and_match_page.dart';
 import 'package:provider/provider.dart';
 
-class GameLevel{
+class GameLevel {
   final int count;
   final String label;
 
@@ -37,7 +37,7 @@ class _PlayPageState extends State<PlayPage> {
 
   GameType? _selected;
   final Set<String> _tags = {};
-  int _count=0;
+  int _count = 0;
 
   MaterialStateProperty<Color> _getColorBySelectedState(bool selected) {
     final ThemeData theme = Theme.of(context);
@@ -137,21 +137,24 @@ class _PlayPageState extends State<PlayPage> {
                       color: Colors.black54,
                       fontWeight: FontWeight.w600)),
               const SizedBox(height: 16.0),
-          Wrap(direction: Axis.horizontal, children: [GameLevel.easy,GameLevel.middle,GameLevel.hard].map((e) => Padding(
-              padding: const EdgeInsets.fromLTRB(
-                  0.0, 0.0, 8.0, 12.0),
-              child: FancyButton(
-                  onPressed: () {
-                    setState(() {
-                      _count = e.count;
-                    });
-                  },
-                  size: 30,
-                  style: ButtonStyle(
-                      backgroundColor: _getColorBySelectedState(
-                          _count==e.count)),
-                  child: Text(e.label))
-          )).toList()),
+              Wrap(
+                  direction: Axis.horizontal,
+                  children: [GameLevel.easy, GameLevel.middle, GameLevel.hard]
+                      .map((e) => Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 12.0),
+                          child: FancyButton(
+                              onPressed: () {
+                                setState(() {
+                                  _count = e.count;
+                                });
+                              },
+                              size: 30,
+                              style: ButtonStyle(
+                                  backgroundColor: _getColorBySelectedState(
+                                      _count == e.count)),
+                              child: Text(e.label))))
+                      .toList()),
               const Spacer(),
               SizedBox(
                 width: double.infinity,
@@ -159,8 +162,11 @@ class _PlayPageState extends State<PlayPage> {
                     size: 40,
                     disabled: _selected == null,
                     onPressed: () {
-                      context.pushNamed('game',
-                          queryParameters: {'gameType': _selected!.name});
+                      context.pushNamed('game', queryParameters: {
+                        'gameType': _selected!.name,
+                        'count': _count,
+                        'tags': _tags.join(',')
+                      });
                     },
                     child:
                         const Text("BẮT ĐẦU", style: TextStyle(fontSize: 20))),

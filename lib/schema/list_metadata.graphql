@@ -1,0 +1,6 @@
+query FlutterAllMetadata{
+    tags{
+        id
+        label
+    }
+}

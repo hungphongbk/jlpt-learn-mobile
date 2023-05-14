@@ -35,14 +35,38 @@ struct LabelledTextField<T: View>: View{
     }
 }
 
+let apolloClient = ApolloClient(url: URL(string: "https://jlpt-learn-hungphongbk.vercel.app/api/graphql")!)
+
+func ??<T>(binding: Binding<T?>, fallback: T) -> Binding<T> {
+    return Binding(get: {
+        binding.wrappedValue ?? fallback
+    }, set: {
+        binding.wrappedValue = $0
+    })
+}
+
 struct AddNewWordUIView: View {
     @EnvironmentObject var hostingProvider: ViewControllerProvider
-
+    
     var delegate:AddNewWordDelegate
     
     @StateObject private var payload = WordPayload()
-    
+    @State private var isSuccess: Bool? = nil
     @State private var list: [Datum] = []
+    
+    func perform(){
+        isSuccess = false
+        apolloClient.perform(mutation: AddNewWordMutation(word: payload.wordInsertInput, kanjis: payload.kanjiUpsertInputPairs)){
+            result in
+            switch result {
+            case .success(_):
+                isSuccess = true
+            case .failure(let error):
+                print("error: \(error)")
+                isSuccess = nil
+            }
+        }
+    }
     
     var body: some View {
         NavigationStack {
@@ -85,12 +109,18 @@ struct AddNewWordUIView: View {
             .navigationBarTitle(Text("Từ mới"),displayMode: .inline)
             .toolbar {
                 ToolbarItem(placement:.navigationBarTrailing) {
-                    Button("Thêm"){
-                        //
-                        hostingProvider.viewController?.dismiss(animated: true)
+                    HStack(spacing: 4){
+                        Button("Thêm"){
+                            perform()
+                        }.disabled(isSuccess == false)
+                        if isSuccess == false {
+                            ProgressView()
+                        }
                     }
                 }
-            }
+            }.toast(message: "Success", isShowing: $isSuccess ?? false, duration: Toast.short, onDisappear: {
+                hostingProvider.viewController?.dismiss(animated: true)
+            })
         }
     }
 }

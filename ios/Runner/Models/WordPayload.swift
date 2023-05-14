@@ -7,6 +7,7 @@
 import SwiftUI
 import Combine
 import Foundation
+import JlptLearn
 
 class WordPayload:ObservableObject{
     class Kanji:ObservableObject, Hashable {
@@ -37,5 +38,18 @@ class WordPayload:ObservableObject{
             let c=$0.objectWillChange.sink(receiveValue: {self.objectWillChange.send()})
             self.cancellables.append(c)
         })
+    }
+    
+    var wordInsertInput:WordInsertInput{
+        get{
+            return WordInsertInput(explain: explain, pronounce: pronounce, word: word);
+        }
+    }
+    var kanjiUpsertInputPairs: [KanjiUpsertInputPair]{
+        get{
+            return kanjis.map{
+                KanjiUpsertInputPair(hv: $0.hv, id: $0.id)
+            }
+        }
     }
 }

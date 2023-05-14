@@ -3,7 +3,7 @@ targets:
     builders:
       graphql_codegen:
         options:
-          assetPath: lib/schema/**.graphql
+          assetPath: lib/schema/**.{graphql,graphqls}
           generatedFileHeader: "// ignore_for_file: type=lint\n"
           clients:
             - graphql

@@ -271,6 +271,130 @@ class _CopyWithStubImpl$Input$KanjiUpsertInput<TRes>
   call({String? hv}) => _res;
 }
 
+class Input$KanjiUpsertInputPair {
+  factory Input$KanjiUpsertInputPair({
+    required String hv,
+    required String id,
+  }) =>
+      Input$KanjiUpsertInputPair._({
+        r'hv': hv,
+        r'id': id,
+      });
+
+  Input$KanjiUpsertInputPair._(this._$data);
+
+  factory Input$KanjiUpsertInputPair.fromJson(Map<String, dynamic> data) {
+    final result$data = <String, dynamic>{};
+    final l$hv = data['hv'];
+    result$data['hv'] = (l$hv as String);
+    final l$id = data['id'];
+    result$data['id'] = (l$id as String);
+    return Input$KanjiUpsertInputPair._(result$data);
+  }
+
+  Map<String, dynamic> _$data;
+
+  String get hv => (_$data['hv'] as String);
+  String get id => (_$data['id'] as String);
+  Map<String, dynamic> toJson() {
+    final result$data = <String, dynamic>{};
+    final l$hv = hv;
+    result$data['hv'] = l$hv;
+    final l$id = id;
+    result$data['id'] = l$id;
+    return result$data;
+  }
+
+  CopyWith$Input$KanjiUpsertInputPair<Input$KanjiUpsertInputPair>
+      get copyWith => CopyWith$Input$KanjiUpsertInputPair(
+            this,
+            (i) => i,
+          );
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    if (!(other is Input$KanjiUpsertInputPair) ||
+        runtimeType != other.runtimeType) {
+      return false;
+    }
+    final l$hv = hv;
+    final lOther$hv = other.hv;
+    if (l$hv != lOther$hv) {
+      return false;
+    }
+    final l$id = id;
+    final lOther$id = other.id;
+    if (l$id != lOther$id) {
+      return false;
+    }
+    return true;
+  }
+
+  @override
+  int get hashCode {
+    final l$hv = hv;
+    final l$id = id;
+    return Object.hashAll([
+      l$hv,
+      l$id,
+    ]);
+  }
+}
+
+abstract class CopyWith$Input$KanjiUpsertInputPair<TRes> {
+  factory CopyWith$Input$KanjiUpsertInputPair(
+    Input$KanjiUpsertInputPair instance,
+    TRes Function(Input$KanjiUpsertInputPair) then,
+  ) = _CopyWithImpl$Input$KanjiUpsertInputPair;
+
+  factory CopyWith$Input$KanjiUpsertInputPair.stub(TRes res) =
+      _CopyWithStubImpl$Input$KanjiUpsertInputPair;
+
+  TRes call({
+    String? hv,
+    String? id,
+  });
+}
+
+class _CopyWithImpl$Input$KanjiUpsertInputPair<TRes>
+    implements CopyWith$Input$KanjiUpsertInputPair<TRes> {
+  _CopyWithImpl$Input$KanjiUpsertInputPair(
+    this._instance,
+    this._then,
+  );
+
+  final Input$KanjiUpsertInputPair _instance;
+
+  final TRes Function(Input$KanjiUpsertInputPair) _then;
+
+  static const _undefined = <dynamic, dynamic>{};
+
+  TRes call({
+    Object? hv = _undefined,
+    Object? id = _undefined,
+  }) =>
+      _then(Input$KanjiUpsertInputPair._({
+        ..._instance._$data,
+        if (hv != _undefined && hv != null) 'hv': (hv as String),
+        if (id != _undefined && id != null) 'id': (id as String),
+      }));
+}
+
+class _CopyWithStubImpl$Input$KanjiUpsertInputPair<TRes>
+    implements CopyWith$Input$KanjiUpsertInputPair<TRes> {
+  _CopyWithStubImpl$Input$KanjiUpsertInputPair(this._res);
+
+  TRes _res;
+
+  call({
+    String? hv,
+    String? id,
+  }) =>
+      _res;
+}
+
 class Input$StringComparator {
   factory Input$StringComparator({
     String? eq,

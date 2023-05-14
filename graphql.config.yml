@@ -1,4 +1,4 @@
-schema: lib/schema/schema.graphqls
+schema: lib/schema/schema.graphql
 include:
   - lib/**
   - ios/Runner/**/*.graphql

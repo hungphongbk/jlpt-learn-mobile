@@ -59,6 +59,7 @@ type Query {
 
 type Tag {
     id: String!
+    label: String!
 }
 
 type Word {

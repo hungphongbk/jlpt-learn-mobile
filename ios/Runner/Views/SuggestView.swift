@@ -55,8 +55,6 @@ struct SuggestView: View {
     @State private var loading = false
     @Environment(\.dismiss) var dismiss
     
-    let apolloClient = ApolloClient(url: URL(string: "https://jlpt-learn-hungphongbk.vercel.app/api/graphql")!)
-    
     @State private var selection: Datum?
     
     func fetch(){

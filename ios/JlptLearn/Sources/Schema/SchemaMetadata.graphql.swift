@@ -29,6 +29,7 @@ public enum SchemaMetadata: ApolloAPI.SchemaMetadata {
     case "JDictAPIResult": return JlptLearn.Objects.JDictAPIResult
     case "JDictWord": return JlptLearn.Objects.JDictWord
     case "JDictKanji": return JlptLearn.Objects.JDictKanji
+    case "Tag": return JlptLearn.Objects.Tag
     default: return nil
     }
   }

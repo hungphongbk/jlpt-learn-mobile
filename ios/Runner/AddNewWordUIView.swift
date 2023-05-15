@@ -103,6 +103,9 @@ struct AddNewWordUIView: View {
                             }
                         }
                     }
+                    Section(header:Text("Tag")){
+                        TagsView(selecteds: $payload.tags)
+                    }
                 }
                 Spacer()
             }

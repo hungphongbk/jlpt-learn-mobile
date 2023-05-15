@@ -1,0 +1,6 @@
+query IOSTags{
+    tags {
+        id
+        label
+    }
+}

@@ -23,12 +23,12 @@ extension Binding {
     }
 }
 
-struct SuggestItem<Content:View>:View{
-    var selected: Binding<Datum?>
-    var item:Datum
+struct SuggestItem<T:Equatable,Content:View>:View{
+    var selected: Binding<T?>
+    var item:T
     let content:Content
     
-    init(item:Datum, selected: Binding<Datum?>, @ViewBuilder _ content:()->Content){
+    init(item:T, selected: Binding<T?>, @ViewBuilder _ content:()->Content){
         self.item = item
         self.selected = selected
         self.content = content()
@@ -44,7 +44,11 @@ struct SuggestItem<Content:View>:View{
             }
         }
         .onTapGesture {
-            self.selected.wrappedValue = item
+            if(item is Bool){
+                (self.selected as! Binding<Bool?>).wrappedValue?.toggle()
+            }else{
+                self.selected.wrappedValue = item
+            }
         }
     }
 }

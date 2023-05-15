@@ -31,6 +31,7 @@ class WordPayload:ObservableObject{
     @Published var pronounce = ""
     @Published var explain = ""
     @Published var kanjis: [Kanji] = []
+    @Published var tags: [String]=[]
     
     var cancellables = [AnyCancellable]()
     init(){
@@ -42,7 +43,7 @@ class WordPayload:ObservableObject{
     
     var wordInsertInput:WordInsertInput{
         get{
-            return WordInsertInput(explain: explain, pronounce: pronounce, word: word);
+            return WordInsertInput(explain: explain, pronounce: pronounce, tags: tags ?? .none , word: word);
         }
     }
     var kanjiUpsertInputPairs: [KanjiUpsertInputPair]{

@@ -19,6 +19,7 @@
 		88449CED2A101BA8007326A1 /* KanjiEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88449CEC2A101BA8007326A1 /* KanjiEdit.swift */; };
 		88449CF02A101BE3007326A1 /* WordPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88449CEF2A101BE3007326A1 /* WordPayload.swift */; };
 		888689AA2A10F370003F67F7 /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888689A92A10F370003F67F7 /* ToastView.swift */; };
+		888689AC2A11C549003F67F7 /* TagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888689AB2A11C549003F67F7 /* TagsView.swift */; };
 		88ACA9A92A0D76D900BEE203 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 88ACA9A82A0D76D900BEE203 /* Apollo */; };
 		88D2CE1D2A0EB0DA00342A6B /* SuggestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D2CE1C2A0EB0DA00342A6B /* SuggestView.swift */; };
 		88EED3DF2A0D8BFF00F99B48 /* JlptLearn in Frameworks */ = {isa = PBXBuildFile; productRef = 88EED3DE2A0D8BFF00F99B48 /* JlptLearn */; };
@@ -84,6 +85,7 @@
 		88449CEC2A101BA8007326A1 /* KanjiEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KanjiEdit.swift; sourceTree = "<group>"; };
 		88449CEF2A101BE3007326A1 /* WordPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPayload.swift; sourceTree = "<group>"; };
 		888689A92A10F370003F67F7 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
+		888689AB2A11C549003F67F7 /* TagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsView.swift; sourceTree = "<group>"; };
 		88D2CE1C2A0EB0DA00342A6B /* SuggestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestView.swift; sourceTree = "<group>"; };
 		88EED3DD2A0D8B3E00F99B48 /* JlptLearn */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = JlptLearn; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
@@ -160,6 +162,7 @@
 				88D2CE1C2A0EB0DA00342A6B /* SuggestView.swift */,
 				88449CEC2A101BA8007326A1 /* KanjiEdit.swift */,
 				888689A92A10F370003F67F7 /* ToastView.swift */,
+				888689AB2A11C549003F67F7 /* TagsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -457,6 +460,7 @@
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				888689AA2A10F370003F67F7 /* ToastView.swift in Sources */,
 				88449CED2A101BA8007326A1 /* KanjiEdit.swift in Sources */,
+				888689AC2A11C549003F67F7 /* TagsView.swift in Sources */,
 				88449CF02A101BE3007326A1 /* WordPayload.swift in Sources */,
 				88D2CE1D2A0EB0DA00342A6B /* SuggestView.swift in Sources */,
 				881C2C3B2A0CDCCE009325BD /* AddNewWordUIView.swift in Sources */,
